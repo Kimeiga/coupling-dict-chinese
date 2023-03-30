@@ -1,5 +1,5 @@
 {
-  "name": "coupling-dict-chinese",
+  "name": "coupling-dict-chinese-updated",
   "version": "1.0.1",
   "description": "Node interface for the CC-CEDICT Chinese dictionary.",
   "main": "index.js",
@@ -22,13 +22,13 @@
   "author": "John Heroy <johnheroy@gmail.com> (http://johnheroy.com/)",
   "license": "MIT",
   "devDependencies": {
-    "mocha": "1.21.x"
+    "mocha": "10.2.x"
   },
   "dependencies": {
     "cn-chars": "0.1.x",
     "prettify-pinyin": "0.1.x",
-    "sequelize": "^2.0.0-rc1",
-    "sqlite3": "^4.0.0",
-    "underscore": "^1.7.0"
+    "sequelize": "^6.30.0",
+    "sqlite3": "^5.1.6",
+    "underscore": "^1.13.6"
   }
 }
