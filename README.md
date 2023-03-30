@@ -1,4 +1,10 @@
-# coupling-dict-chinese
+# coupling-dict-chinese-updated
+
+This is a fork of coupling-dict-chinese that updates all the packages, particularly sqlite3 to v5 so that it could be used with node versions beyond v14, and updates the cc-cedict.txt to March 30, 2023
+
+--- 
+
+> The following is the Readme of coupling-dict-chinese:
 
 This is a fork of node-cc-cedict that updates some dependencies and the
 database from 2014 to 2020.
