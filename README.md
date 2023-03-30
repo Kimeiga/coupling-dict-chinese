@@ -2,6 +2,15 @@
 
 This is a fork of coupling-dict-chinese that updates all the packages, particularly sqlite3 to v5 so that it could be used with node versions beyond v14, and updates the cc-cedict.txt to March 30, 2023
 
+## Usage
+
+```
+import cedict from 'coupling-dict-chinese';
+
+let words = await cedict.searchByChineseAsync('世界')
+
+```
+
 --- 
 
 > The following is the Readme of coupling-dict-chinese:
@@ -19,6 +28,8 @@ traditional characters, otherwise converts everything to simplified and
 performs that lookup instead.
 
 ## Usage
+
+> (still works)
 
 ```
 const cedict = require('coupling-dict-chinese');

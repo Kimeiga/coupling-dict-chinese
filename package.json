@@ -1,6 +1,6 @@
 {
   "name": "coupling-dict-chinese-updated",
-  "version": "1.0.1",
+  "version": "1.0.3",
   "description": "Node interface for the CC-CEDICT Chinese dictionary.",
   "main": "index.js",
   "directories": {
