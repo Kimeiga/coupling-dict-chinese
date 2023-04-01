@@ -2,11 +2,12 @@
 const Sequelize = require('sequelize');
 const fs = require('fs');
 const sqlite = require('sqlite3');
+const path = require('path');
 
 // DB config.
 const sequelize = new Sequelize(null, null, null, {
   dialect: 'sqlite',
-  storage: '../db/cc-cedict.sqlite'
+  storage: path.join(__dirname, '../db/cc-cedict.sqlite')
 });
 
 // create a sqlite database with every entry
@@ -19,22 +20,22 @@ const Word = sequelize.define('Word', {
 
 // Sync schema.
 sequelize
-  .sync({force: true})
-  .complete(err => {
-     if (err) {
-       console.log('Error creating table', err);
-       return;
-     }
+  .sync({ force: true })
+  .then(() => {
+    console.log('Database initialized.');
 
-     console.log('Database initialized.');
+    // const data = fs.readFileSync('../src/cc-cedict.txt', 'UTF-8');
+    const data = fs.readFileSync(path.join(__dirname, '../src/cc-cedict.txt'), 'UTF-8');
 
-    const data = fs.readFileSync('../src/cc-cedict.txt', 'UTF-8' );
     const lines = data.toString().split('\n');
     console.log('Dictionary loaded, executing parser.');
     addToDB(lines).then(() => console.log('Finished!')).catch(console.error);
+  })
+  .catch(err => {
+    console.log('Error creating table', err);
   });
 
-async function addToDB (lines) {
+async function addToDB(lines) {
   const regex = /\[(.*?)\]/;
 
   for (let i = 0; i < lines.length; i++) {
@@ -42,7 +43,7 @@ async function addToDB (lines) {
 
     // Comment.
     if (!line.length) { continue; }
-    if (line[0] === '#'){ continue; }
+    if (line[0] === '#') { continue; }
 
     const spaceSplit = line.split(' ');
     const traditional = spaceSplit[0];

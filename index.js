@@ -6,6 +6,7 @@ var sequelize = new Sequelize(null, null, null, {
   logging: false,
   storage: path.join(__dirname, './db/cc-cedict.sqlite')
 });
+const OpenCC = require('opencc');
 
 var Word = sequelize.define('Word', {
   traditional: Sequelize.STRING,
@@ -18,6 +19,9 @@ var Word = sequelize.define('Word', {
 var cnchars = require('cn-chars');
 // Prettify the pinyin default (letters + numbers) in CC-CEDICT.
 var pinyin = require('prettify-pinyin');
+
+const converterS2T = new OpenCC('s2t.json');
+const converterT2S = new OpenCC('t2s.json');
 
 module.exports.searchByChinese = function (str, cb) {
   var simplified = str.slice().split('');
@@ -56,25 +60,15 @@ module.exports.searchByChinese = function (str, cb) {
 };
 
 module.exports.searchByChineseAsync = async function (str) {
-  var simplified = str.slice().split('');
-  var traditional = str.slice().split('');
-  for (var i = 0; i < str.length; i++) {
-    simplified[i] = cnchars.toSimplifiedChar(str[i]);
-    traditional[i] = cnchars.toTraditionalChar(str[i]);
-  }
-  simplified = simplified.join('');
-  traditional = traditional.join('');
+  let [simplified, traditional] = await Promise.all([converterT2S.convertPromise(str), converterS2T.convertPromise(str)]);
 
-  // default search is simplified unless input string is traditional
-  var query = {
-    where: { simplified: simplified }
-  };
+  let words;
+
   if (traditional === str) {
-    query.where = { traditional: traditional };
+    words = await Word.findAll({ where: { traditional: traditional } })
+  } else {
+    words = await Word.findAll({ where: { simplified: simplified } })
   }
-
-  let words = await Word.findAll(query);
-
 
   var results = [];
   _.each(words, function (word) {
