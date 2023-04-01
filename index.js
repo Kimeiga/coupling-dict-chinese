@@ -6,7 +6,6 @@ var sequelize = new Sequelize(null, null, null, {
   logging: false,
   storage: path.join(__dirname, './db/cc-cedict.sqlite')
 });
-const OpenCC = require('opencc');
 
 var Word = sequelize.define('Word', {
   traditional: Sequelize.STRING,
@@ -20,8 +19,9 @@ var cnchars = require('cn-chars');
 // Prettify the pinyin default (letters + numbers) in CC-CEDICT.
 var pinyin = require('prettify-pinyin');
 
-const converterS2T = new OpenCC('s2t.json');
-const converterT2S = new OpenCC('t2s.json');
+const OpenCC = require('opencc');
+const converterS2T = new OpenCC('s2tw.json');
+const converterT2S = new OpenCC('tw2s.json');
 
 module.exports.searchByChinese = function (str, cb) {
   var simplified = str.slice().split('');
